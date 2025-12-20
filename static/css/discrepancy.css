@@ -1,0 +1,10 @@
+.highlight-glow {
+    box-shadow: 0 0 20px rgba(19, 138, 236, 0.5) !important;
+    transition: box-shadow 0.3s ease-in-out;
+}
+.minimap-marker {
+    transition: transform 0.1s;
+}
+.minimap-marker:hover {
+    transform: scale(1.1);
+}

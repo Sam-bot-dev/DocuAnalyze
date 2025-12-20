@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document Comparison (Step 2)</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#138aec",
+                        "background-light": "#FAFAFA",
+                        "background-dark": "#101a22",
+                        "match-light": "#E0F2FE",
+                        "diff-light": "#FFEDD5",
+                        "soft-gray": "#F3F4F6",
+                    },
+                    fontFamily: { display: ["Inter", "sans-serif"] },
+                    borderRadius: {
+                        DEFAULT: "1rem", lg: "1.5rem", xl: "2rem", "2xl": "3rem", full: "9999px"
+                    },
+                    boxShadow: {
+                        soft: "0 10px 40px -10px rgba(0,0,0,0.08)",
+                        glow: "0 0 20px rgba(19, 138, 236, 0.15)"
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .diff-word {
+            background: #FFEDD5;
+            border-bottom: 2px solid #FDBA74;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .match-word {
+            background: #E0F2FE;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .mirror-scroll::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+
+        .mirror-scroll::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 999px;
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-[#111518] font-display flex flex-col h-screen">
+
+    <!-- Header -->
+    <div class="px-6 pt-6 pb-2 shrink-0 z-20">
+        <header
+            class="mx-auto max-w-[1200px] bg-white/80 backdrop-blur-md border border-white/50 shadow-soft rounded-full px-6 py-3 flex items-center justify-between">
+
+            <!-- Back + Brand -->
+            <div class="flex items-center gap-4">
+                <button onclick="window.location.href='summaries.html'"
+                    class="size-8 rounded-full hover:bg-soft-gray flex items-center justify-center text-slate-500">
+                    <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+                </button>
+
+                <div class="flex items-center gap-2">
+                    <div class="size-6 bg-primary/10 rounded-full flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined text-[16px]">description</span>
+                    </div>
+                    <span class="text-base font-bold">DocuAnalyze</span>
+                </div>
+            </div>
+
+            <!-- Step Pills -->
+            <div class="hidden md:flex items-center bg-soft-gray/50 rounded-full px-1 py-1">
+                <div
+                    class="px-4 py-1.5 text-xs font-medium text-slate-400 hover:text-slate-600 cursor-pointer rounded-full">Upload
+                </div>
+
+                <div
+                    class="px-4 py-1.5 text-xs font-bold text-primary bg-white shadow-sm rounded-full flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[14px]">analytics</span> Compare
+                </div>
+
+                <div
+                    class="px-4 py-1.5 text-xs font-medium text-slate-400 hover:text-slate-600 cursor-pointer rounded-full">
+                    Report
+                </div>
+            </div>
+
+            <!-- Profile -->
+            <div class="size-10 rounded-full bg-gray-300 border shadow-sm"></div>
+        </header>
+    </div>
+
+    <!-- MAIN -->
+    <main class="flex-1 px-6 pb-6 max-w-[1400px] mx-auto flex flex-col overflow-hidden">
+
+        <!-- Header + Stats -->
+        <div class="flex flex-col md:flex-row justify-between items-end gap-6 py-6">
+            <div>
+                <h1 class="text-3xl font-bold">Document Comparison</h1>
+                <p class="text-slate-500 text-sm flex items-center gap-2">
+                    <span class="size-2 rounded-full bg-primary animate-pulse"></span>
+                    Reviewing changes between documents
+                </p>
+            </div>
+
+            <div class="flex gap-4" id="statsContainer">
+                <!-- Dynamic stats inserted here -->
+            </div>
+        </div>
+
+        <!-- Viewer Container -->
+        <div class="flex-1 min-h-0 bg-white rounded-[2rem] shadow-soft border overflow-hidden flex flex-col">
+
+            <!-- Header (Dynamic) -->
+            <div class="flex border-b bg-white z-10" id="headerContainer">
+                <!-- Filled by JS -->
+            </div>
+
+            <!-- CONTENT -->
+            <div class="flex-1 flex overflow-hidden">
+                <!-- Left -->
+                <div id="leftPane"
+                    class="flex-1 px-8 py-8 overflow-y-auto mirror-scroll border-r leading-relaxed text-sm lg:text-base">
+                </div>
+
+                <!-- Right -->
+                <div id="rightPane"
+                    class="flex-1 px-8 py-8 overflow-y-auto mirror-scroll leading-relaxed text-sm lg:text-base">
+                </div>
+            </div>
+        </div>
+
+        <!-- NEXT BUTTON -->
+        <div class="flex justify-end mt-4">
+            <button onclick="window.location.href='/discrepancy'"
+                class="bg-primary text-white px-6 py-3 rounded-full font-bold shadow-lg hover:bg-blue-600 flex items-center gap-2">
+                Next: Discrepancy Detector
+                <span class="material-symbols-outlined">arrow_forward</span>
+            </button>
+        </div>
+
+    </main>
+
+    <!-- JS -->
+    <script>
+        const leftPane = document.getElementById("leftPane");
+        const rightPane = document.getElementById("rightPane");
+        const headerContainer = document.getElementById("headerContainer");
+        const statsContainer = document.getElementById("statsContainer");
+
+        async function loadComparison() {
+            leftPane.innerHTML = `
+                <div class="w-full flex justify-center py-20">
+                    <div class="h-10 w-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                </div>`;
+
+            try {
+                const res = await fetch("/api/comparison");
+                const data = await res.json();
+                renderComparison(data);
+            } catch (err) {
+                leftPane.innerHTML =
+                    `<p class="text-center text-red-500 py-10 font-medium">Failed to load comparison data.</p>`;
+            }
+        }
+
+        function highlightDiffs(text, diffs) {
+            let modifiedText = text;
+
+            diffs.forEach(diff => {
+                const escapedLeft = diff.left.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const regex = new RegExp(escapedLeft, "g");
+                modifiedText = modifiedText.replace(regex, `<span class="diff-word">${diff.left}</span>`);
+            });
+
+            return modifiedText;
+        }
+
+        function renderComparison(data) {
+
+            /* Header (file names + versions) */
+            headerContainer.innerHTML = `
+                <div class="flex-1 px-8 py-4 border-r flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-slate-400">picture_as_pdf</span>
+                        <span class="font-semibold">${data.fileA}</span>
+                    </div>
+                    <span class="text-xs bg-slate-100 px-2 py-1 rounded">${data.versionA}</span>
+                </div>
+
+                <div class="flex-1 px-8 py-4 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-primary">description</span>
+                        <span class="font-semibold">${data.fileB}</span>
+                    </div>
+                    <span class="text-xs bg-primary/10 text-primary px-2 py-1 rounded">${data.versionB}</span>
+                </div>
+            `;
+
+            /* Stats */
+            statsContainer.innerHTML = `
+                <div class="flex items-center gap-3 px-5 py-3 bg-white rounded-2xl border shadow-sm">
+                    <div class="size-10 rounded-full bg-match-light flex items-center justify-center text-primary">
+                        <span class="material-symbols-outlined">check_circle</span>
+                    </div>
+                    <div>
+                        <span class="text-xs font-semibold text-slate-400 uppercase">Matches</span>
+                        <span class="text-xl font-bold">${data.stats.matches}</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3 px-5 py-3 bg-white rounded-2xl border shadow-sm">
+                    <div class="size-10 rounded-full bg-diff-light flex items-center justify-center text-orange-500">
+                        <span class="material-symbols-outlined">warning</span>
+                    </div>
+                    <div>
+                        <span class="text-xs font-semibold text-slate-400 uppercase">Differences</span>
+                        <span class="text-xl font-bold">${data.stats.differences}</span>
+                    </div>
+                </div>
+            `;
+
+            /* Content building */
+            leftPane.innerHTML = "";
+            rightPane.innerHTML = "";
+
+            data.sections.forEach(sec => {
+                let leftHTML = highlightDiffs(sec.left, sec.diffs);
+                let rightHTML = highlightDiffs(sec.right, sec.diffs);
+
+                leftPane.innerHTML += `
+                    <h3 class="text-lg font-bold mb-4">${sec.title}</h3>
+                    <p class="mb-6">${leftHTML}</p>
+                `;
+
+                rightPane.innerHTML += `
+                    <h3 class="text-lg font-bold mb-4">${sec.title}</h3>
+                    <p class="mb-6">${rightHTML}</p>
+                `;
+            });
+
+            syncScroll(leftPane, rightPane);
+        }
+
+        function syncScroll(a, b) {
+            let active = null;
+
+            a.addEventListener("scroll", () => {
+                if (active !== "a") {
+                    active = "a";
+                    b.scrollTop = a.scrollTop;
+                }
+                active = null;
+            });
+
+            b.addEventListener("scroll", () => {
+                if (active !== "b") {
+                    active = "b";
+                    a.scrollTop = b.scrollTop;
+                }
+                active = null;
+            });
+        }
+
+        loadComparison();
+    </script>
+
+</body>
+</html>

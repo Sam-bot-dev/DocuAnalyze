@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Summaries (Step 1) - DocuAnalyze</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#138aec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101a22"
+                    }
+                }
+            }
+        };
+    </script>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111518] dark:text-white flex flex-col min-h-screen">
+
+    <!-- Navbar -->
+    <div class="w-full px-6 py-4 flex justify-center sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md">
+        <header class="flex items-center justify-between w-full max-w-[1200px] bg-white dark:bg-[#1a2632] rounded-full px-6 py-3 shadow">
+            <div class="flex items-center gap-3">
+                <div class="bg-primary/10 text-primary p-2 rounded-full">
+                    <span class="material-symbols-outlined text-[24px]">description</span>
+                </div>
+                <h2 class="text-lg font-bold">DocuAnalyze</h2>
+            </div>
+        </header>
+    </div>
+
+    <!-- Main -->
+    <main class="flex-1 flex flex-col items-center px-6 pb-20">
+        <div class="w-full max-w-[1200px] flex flex-col gap-8">
+
+            <!-- Header -->
+            <div class="flex flex-col md:flex-row justify-between gap-6 mt-8">
+                <div>
+                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold">Analysis Complete</span>
+                    <h1 class="text-4xl md:text-5xl font-black mt-2">Document Summaries</h1>
+                    <p class="text-gray-500 text-lg">Your documents have been analyzed and summarized.</p>
+                </div>
+
+                <div class="w-full md:w-80 bg-white dark:bg-[#1a2632] p-5 rounded-2xl shadow">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm font-bold">Step 1 of 4</span>
+                        <span class="text-xs text-primary font-semibold">25% Complete</span>
+                    </div>
+                    <div class="h-3 bg-gray-300 rounded-full overflow-hidden">
+                        <div class="h-full bg-primary" style="width:25%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Cards -->
+            <div id="summaryGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                <div id="loader" class="col-span-full py-20 flex justify-center">
+                    <div class="h-12 w-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                </div>
+            </div>
+
+            <div class="flex justify-end mt-6">
+                <button onclick="window.location.href='/comparison'"
+                    class="bg-primary text-white px-6 py-3 rounded-full font-bold hover:bg-blue-600 flex items-center gap-2">
+                    Next: Document Comparison
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Summary Modal -->
+    <div id="summaryModalBg" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-[999] backdrop-blur">
+        <div class="bg-white dark:bg-[#1a2632] p-8 rounded-2xl max-w-xl w-full shadow-lg border">
+            <h2 id="modalFilename" class="text-2xl font-bold mb-4"></h2>
+
+            <p id="modalSummary" class="text-gray-700 dark:text-gray-300 leading-relaxed max-h-[300px] overflow-y-auto"></p>
+
+            <button onclick="closeModal()"
+                class="mt-6 bg-primary text-white px-5 py-2 rounded-full font-bold hover:bg-blue-600">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script>
+        async function fetchSummaries() {
+            try {
+                const res = await fetch("/api/summaries");
+                if (!res.ok) throw new Error();
+
+                const data = await res.json();
+                renderSummaryCards(data);
+
+            } catch {
+                document.getElementById("summaryGrid").innerHTML =
+                    `<div class="col-span-full text-center text-red-500 py-10">Failed to load summaries.</div>`;
+            }
+        }
+
+        function renderSummaryCards(data) {
+            const grid = document.getElementById("summaryGrid");
+            document.getElementById("loader").remove();
+
+            data.forEach(doc => {
+                const card = document.createElement("article");
+                card.className = "bg-white dark:bg-[#1a2632] cursor-pointer rounded-xl p-6 shadow hover:shadow-lg transition";
+
+                card.innerHTML = `
+                    <h3 class="font-bold text-lg mb-2">${doc.filename}</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 line-clamp-4">
+                        ${doc.summary}
+                    </p>
+                `;
+
+                // On click → show full summary
+                card.onclick = () => openSummaryModal(doc.filename, doc.summary);
+
+                grid.appendChild(card);
+            });
+        }
+
+        function openSummaryModal(filename, summary) {
+            document.getElementById("modalFilename").textContent = filename;
+            document.getElementById("modalSummary").textContent = summary;
+            document.getElementById("summaryModalBg").classList.remove("hidden");
+        }
+
+        function closeModal() {
+            document.getElementById("summaryModalBg").classList.add("hidden");
+        }
+
+        fetchSummaries();
+    </script>
+
+</body>
+</html>

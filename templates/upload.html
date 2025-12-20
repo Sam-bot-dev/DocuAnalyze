@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Upload Documents</title>
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+
+<script id="tailwind-config">
+tailwind.config = {
+    darkMode: "class",
+    theme: {
+        extend: {
+            colors: {
+                primary: "#39E079",
+                "background-light": "#f6f8f7",
+                "background-dark": "#122017",
+                "pastel-blue": "#E3F2FD",
+                "pastel-purple": "#F3E5F5",
+                "pastel-green": "#E8F5E9",
+                "pastel-yellow": "#FFFDE7",
+                "pastel-pink": "#FCE4EC",
+            },
+            fontFamily: {
+                display: "Inter",
+                mono: ["JetBrains Mono", "monospace"],
+            },
+            borderRadius: {
+                DEFAULT: "1rem",
+                lg: "2rem",
+                xl: "3rem",
+                full: "9999px",
+            },
+        }
+    }
+};
+</script>
+
+<style>
+.dot-grid {
+    background-image: radial-gradient(#cbd5e1 1.5px, transparent 1.5px);
+    background-size: 24px 24px;
+}
+.dark .dot-grid {
+    background-image: radial-gradient(#334155 1.5px, transparent 1.5px);
+}
+
+.glass-panel {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+.dark .glass-panel {
+    background: rgba(30, 41, 59, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.file-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 9999px;
+    font-size: 14px;
+    font-weight: 500;
+}
+</style>
+
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white">
+
+<!-- MAIN CONTENT -->
+<main class="min-h-screen px-6 py-10 flex flex-col items-center">
+
+<h1 class="text-4xl md:text-5xl font-bold text-center mb-4">Let's align your documents ✨</h1>
+<p class="text-slate-500 dark:text-slate-400 text-center mb-10 max-w-lg text-lg">
+    Upload your documents to begin processing.
+</p>
+
+<!-- Upload Card -->
+<div class="w-full max-w-4xl bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-xl border border-slate-200 dark:border-slate-700">
+
+    <!-- Dropzone -->
+    <div id="dropzone"
+        class="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-2xl p-10 text-center cursor-pointer bg-slate-50 dark:bg-slate-900 hover:border-primary transition">
+
+        <span class="material-symbols-outlined text-[48px] text-primary mb-3">cloud_upload</span>
+        <p class="font-bold text-lg">Click or drag files here</p>
+        <p class="text-slate-500 text-sm">PDF, DOCX up to 10MB</p>
+
+        <input id="fileInput" type="file" class="hidden" multiple accept=".pdf,.doc,.docx"/>
+    </div>
+
+    <!-- File Chips -->
+    <div class="mt-6">
+        <div class="flex justify-between items-center">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Ready to process</span>
+            <button id="clearAllBtn" class="text-xs text-primary hover:underline">Clear all</button>
+        </div>
+
+        <div id="fileChips" class="flex flex-wrap gap-2 mt-3"></div>
+    </div>
+
+    <!-- Action Button -->
+    <button id="submitBtn"
+        class="w-full h-12 bg-primary text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:bg-green-500 active:scale-95 mt-6 flex items-center justify-center gap-2">
+
+        <span class="material-symbols-outlined">play_circle</span>
+        Start Swarm Analysis
+    </button>
+</div>
+
+</main>
+
+<!-- ============================= -->
+<!--      JAVASCRIPT LOGIC         -->
+<!-- ============================= -->
+
+<script>
+let selectedFiles = [];
+
+// References
+const fileInput = document.getElementById("fileInput");
+const dropzone = document.getElementById("dropzone");
+const fileChips = document.getElementById("fileChips");
+const clearAllBtn = document.getElementById("clearAllBtn");
+const submitBtn = document.getElementById("submitBtn");
+
+// ---------- Add Files ----------
+function addFiles(files) {
+    for (let file of files) {
+        selectedFiles.push(file);
+    }
+    renderChips();
+}
+
+// ---------- Render Chips ----------
+function renderChips() {
+    fileChips.innerHTML = "";
+
+    selectedFiles.forEach((file, index) => {
+        const chip = document.createElement("div");
+        chip.className = "file-chip bg-pastel-blue dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700";
+
+        chip.innerHTML = `
+            <span class="material-symbols-outlined text-[18px]">description</span>
+            ${file.name}
+            <button class="material-symbols-outlined text-[16px] cursor-pointer">close</button>
+        `;
+
+        chip.querySelector("button").onclick = () => {
+            selectedFiles.splice(index, 1);
+            renderChips();
+        };
+
+        fileChips.appendChild(chip);
+    });
+}
+
+// ---------- Drag & Drop ----------
+dropzone.addEventListener("click", () => fileInput.click());
+
+dropzone.addEventListener("dragover", e => {
+    e.preventDefault();
+    dropzone.classList.add("border-primary");
+});
+dropzone.addEventListener("dragleave", () => {
+    dropzone.classList.remove("border-primary");
+});
+dropzone.addEventListener("drop", e => {
+    e.preventDefault();
+    dropzone.classList.remove("border-primary");
+    addFiles(e.dataTransfer.files);
+});
+
+// Input change
+fileInput.addEventListener("change", e => addFiles(e.target.files));
+
+// Clear all
+clearAllBtn.addEventListener("click", () => {
+    selectedFiles = [];
+    renderChips();
+});
+
+// ---------- AJAX Upload ----------
+submitBtn.addEventListener("click", async () => {
+    if (selectedFiles.length === 0) {
+        alert("Please upload at least one file.");
+        return;
+    }
+
+    let formData = new FormData();
+    selectedFiles.forEach(file => formData.append("files", file));
+
+    try {
+        let response = await fetch("/api/upload", {
+
+            method: "POST",
+            body: formData
+        });
+
+        if (response.ok) {
+            window.location.href = "summaries";
+        } else {
+            alert("Upload failed.");
+        }
+    } catch (err) {
+        alert("An error occurred.");
+    }
+});
+</script>
+
+</body>
+</html>

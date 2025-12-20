@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>Discrepancy Detector - Step 3</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet"/>
+
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/discrepancy.css') }}" />
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#138aec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101a22"
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        DEFAULT: "1rem",
+                        lg: "2rem",
+                        xl: "3rem",
+                        full: "9999px"
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased overflow-x-hidden">
+
+<div class="relative flex min-h-screen w-full flex-col">
+
+    <!-- Top Navigation -->
+    <header class="sticky top-0 z-50 flex items-center justify-between bg-white/80 dark:bg-[#101a22]/80 backdrop-blur-md px-6 py-4 lg:px-10 border-b border-slate-100 dark:border-slate-800">
+        <div class="flex items-center gap-3">
+            <div class="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <span class="material-symbols-outlined text-2xl">fact_check</span>
+            </div>
+            <h2 class="text-lg font-bold">Discrepancy Detector</h2>
+        </div>
+
+        <div class="hidden md:flex items-center gap-8">
+            <a class="text-slate-600 dark:text-slate-300 hover:text-primary text-sm font-semibold" href="#">Dashboard</a>
+            <a class="text-slate-600 dark:text-slate-300 hover:text-primary text-sm font-semibold" href="#">History</a>
+            <a class="text-slate-600 dark:text-slate-300 hover:text-primary text-sm font-semibold" href="#">Settings</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 px-4 py-6 md:px-10 lg:px-20 max-w-screen-2xl mx-auto w-full">
+
+        <!-- Progress Section -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+            <div class="flex flex-col gap-2 w-full max-w-md">
+                <div class="flex justify-between">
+                    <span class="text-slate-500 text-sm font-bold uppercase">Step 3 of 4</span>
+                    <span class="text-primary text-sm font-bold">75%</span>
+                </div>
+                <div class="h-3 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                    <div class="h-full bg-primary rounded-full" style="width: 75%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Title + Subtitle -->
+        <div class="mb-8">
+            <h1 id="issue-title" class="text-4xl md:text-5xl font-black tracking-tight mb-2">
+                <!-- Dynamic Title -->
+            </h1>
+
+            <p id="issue-subtitle" class="text-slate-500 dark:text-slate-400 text-lg font-medium">
+                <!-- Dynamic Subtitle -->
+            </p>
+        </div>
+
+        <!-- Filters -->
+        <div id="filter-bar" class="flex flex-wrap gap-3 mb-10">
+            <!-- Dynamic filter chips inserted by JS -->
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-8 items-start relative">
+            <!-- Issues Grid -->
+            <div class="w-full lg:flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 pb-20" id="issue-grid">
+                <!-- Dynamic cards inserted by JS -->
+            </div>
+                        <!-- ===== MINIMAP SIDEBAR ===== -->
+            <aside class="w-full lg:w-[380px] shrink-0 hidden lg:block sticky top-28">
+
+                <div class="bg-white dark:bg-slate-800 rounded-lg p-6 shadow-sm border border-slate-200 dark:border-slate-700/50 flex flex-col h-[calc(100vh-160px)]">
+
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-slate-400">description</span>
+                            Document Preview
+                        </h3>
+                        <span id="minimap-page-indicator"
+                              class="text-xs font-bold text-slate-400 bg-slate-100 dark:bg-slate-700 px-2 py-1 rounded">
+                            Page 1
+                        </span>
+                    </div>
+
+                    <!-- Minimap Container -->
+                    <div id="minimap-container"
+                         class="flex-1 bg-slate-50 dark:bg-slate-900/40 rounded-lg p-3 overflow-y-auto relative border border-slate-200/50 dark:border-slate-700 space-y-4">
+
+                        <!-- Pages dynamically inserted by JS -->
+                        <!-- Each page becomes: -->
+                        <!--
+                        <div class="minimap-page relative bg-white dark:bg-slate-800 rounded border shadow-sm"
+                             data-page="1">
+                             <div class="minimap-issue-marker absolute ..."></div>
+                        </div>
+                        -->
+                    </div>
+
+                    <!-- Page navigation (optional, JS can hook this later) -->
+                    <div class="pt-4 flex justify-between items-center text-xs text-slate-500 font-medium">
+                        <button id="minimap-prev-btn"
+                                class="flex items-center gap-1 hover:text-primary transition-colors">
+                            <span class="material-symbols-outlined text-base">arrow_back</span>
+                            Prev
+                        </button>
+
+                        <button id="minimap-next-btn"
+                                class="flex items-center gap-1 hover:text-primary transition-colors">
+                            Next
+                            <span class="material-symbols-outlined text-base">arrow_forward</span>
+                        </button>
+                    </div>
+                </div>
+            </aside>
+        </div> <!-- END FLEX ROW -->
+
+    </main>
+
+    <!-- ===== FIXED CTA BUTTON (Desktop Only) ===== -->
+    <div class="fixed bottom-8 right-8 hidden lg:flex">
+        <a href="/score"
+           class="flex items-center gap-3 bg-slate-900 hover:bg-black text-white dark:bg-white dark:text-slate-900 
+                  dark:hover:bg-slate-200 pl-6 pr-2 py-2 rounded-full shadow-2xl shadow-slate-900/20 hover:scale-105 
+                  transition-all duration-300 group">
+            <span class="font-bold text-lg">Generate Report</span>
+            <div class="size-10 bg-white/20 dark:bg-black/10 rounded-full flex items-center justify-center 
+                        group-hover:rotate-45 transition-transform">
+                <span class="material-symbols-outlined">arrow_outward</span>
+            </div>
+        </a>
+    </div>
+
+</div>  <!-- END WRAPPER -->
+<!-- Include JS Logic -->
+<script src="{{ url_for('static', filename='js/discrepancy.js') }}"></script>
+
+</body>
+</html>
