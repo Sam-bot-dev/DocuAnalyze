@@ -1,4 +1,9 @@
 # 📄 DocuAnalyze – Multi-Agent Document Intelligence
+![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)
+![Flask](https://img.shields.io/badge/Flask-Framework-black.svg)
+![Transformers](https://img.shields.io/badge/HuggingFace-Transformers-yellow.svg)
+![License](https://img.shields.io/badge/License-MIT-green.svg)
+![Status](https://img.shields.io/badge/Status-Active-success.svg)
 
 DocuAnalyze is an advanced AI-powered document processing system built using **Flask**, **Transformers**, and a multi-step workflow.  
 It intelligently extracts text, summarizes documents, compares versions, detects discrepancies, and generates a final report score — all through a clean, modern UI.
@@ -37,6 +42,11 @@ Uses a **Transformer-based Fast Summarizer** (DistilBART / Pegasus / T5 Small) t
 - Export to PDF (under development)  
 
 ---
+## 🖼 Preview Screenshots
+### 🔹 Upload Page
+![Upload Page](screenshots/upload.png)
+### 🔹 Final Score Report
+![Score Page](screenshots/score.png)
 
 ## 🧠 AI Pipeline
 
