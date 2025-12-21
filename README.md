@@ -8,6 +8,7 @@
 DocuAnalyze is an advanced AI-powered document processing system built using **Flask**, **Transformers**, and a multi-step workflow.  
 It intelligently extracts text, summarizes documents, compares versions, detects discrepancies, and generates a final report score — all through a clean, modern UI.
 
+try it yourself(https://docuanalyze.onrender.com)
 ---
 
 ## 🚀 Features
