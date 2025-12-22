@@ -19,7 +19,7 @@ rapidfuzz==3.6.1
 numpy==1.26.4
 
 # NLP
-#transformers==4.38.2
+transformers==4.38.2
 #torch
 #sentencepiece==0.2.0
 #numpy==1.26.4
