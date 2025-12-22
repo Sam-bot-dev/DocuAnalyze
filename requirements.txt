@@ -1,23 +1,21 @@
-# Core backend
+# Backend
 Flask==3.0.2
 gunicorn==21.2.0
 Werkzeug==3.0.1
 
-# File handling
+# Upload handling
 python-multipart==0.0.9
 
-# NLP & text processing
+# NLP
 transformers==4.38.2
-torch
+torch==2.2.1
 sentencepiece==0.2.0
-
-# Fast similarity (NO C++ BUILD)
-rapidfuzz==3.6.1
-
-# PDF / DOCX parsing
-PyMuPDF==1.23.25
-python-docx==1.1.0
-
-# Utilities
 numpy==1.26.4
 tqdm==4.66.2
+
+# Text similarity (NO C++ build)
+rapidfuzz==3.6.1
+
+# Document parsing (SAFE)
+# PyMuPDF==1.22.5
+python-docx==1.1.0
